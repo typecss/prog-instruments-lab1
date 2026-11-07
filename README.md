@@ -1,40 +1,119 @@
-# Lab 1 — Code quality tools and CI
+# Лабораторная работа №1
+## Инструменты контроля качества кода и непрерывной интеграции (CI)
 
-The code is adapted from [karpathy/micrograd](https://github.com/karpathy/micrograd/blob/master/micrograd/engine.py), copyright (c) 2020 Andrej Karpathy, MIT license. See `LICENSE`.
+### Цель работы
 
-## Purpose
+Изучить инструменты автоматического контроля качества программного кода на Python, настроить статический анализ, форматирование, проверку типов, Git hooks и непрерывную интеграцию с помощью GitHub Actions.
 
-Add automated code quality tools to an existing Python module: Ruff linter and formatter, Pyright type checking, Makefile shortcuts, Git hooks and GitHub Actions.
+### Исходный проект
 
-## Setup
+В качестве основы использован открытый Python-проект **micrograd**, разработанный Andrej Karpathy.
 
-Requirements: Python 3.11+, pip, Git and GNU Make.
+Исходный репозиторий: https://github.com/karpathy/micrograd
+
+Исходный файл: https://github.com/karpathy/micrograd/blob/master/micrograd/engine.py
+
+Micrograd представляет собой небольшой движок автоматического дифференцирования, позволяющий выполнять арифметические операции и вычислять градиенты.
+
+Код адаптирован для лабораторной работы. Сохранена оригинальная лицензия MIT.
+
+### Используемые инструменты
+
+- **Ruff** — статический анализ Python-кода и поиск нарушений правил оформления.
+- **Ruff Format** — автоматическое форматирование исходного кода.
+- **Pyright** — статическая проверка типов данных.
+- **Makefile** — автоматизация часто используемых команд.
+- **Pre-commit** — автоматические проверки перед созданием коммитов и отправкой изменений.
+- **GitHub Actions** — запуск проверок при изменениях репозитория.
+
+### Структура проекта
+
+- `micrograd_lab/` — исходный код Python.
+- `tests/` — модульные тесты.
+- `pyproject.toml` — конфигурация проекта и Ruff.
+- `pyrightconfig.json` — конфигурация Pyright.
+- `Makefile` — команды автоматизации.
+- `.pre-commit-config.yaml` — настройки Git hooks.
+- `.github/workflows/quality.yml` — конфигурация GitHub Actions.
+- `LICENSE` — лицензия исходного проекта.
+
+### Установка зависимостей
+
+Для выполнения работы необходимы Python 3.11 или новее, Git и GNU Make.
 
 ```bash
 python -m pip install -e ".[dev]"
-make fulltest
-make precommit
 ```
 
-On Windows, GNU Make must be installed separately (for example via MSYS2 or Git Bash with make available). The equivalent checks can always be run directly:
+### Запуск проверок
+
+Проверка качества кода:
 
 ```bash
 python -m ruff check .
+```
+
+Проверка форматирования:
+
+```bash
 python -m ruff format --check .
+```
+
+Автоматическое форматирование:
+
+```bash
+python -m ruff format .
+```
+
+Проверка типов:
+
+```bash
 python -m pyright
+```
+
+Запуск модульных тестов:
+
+```bash
 python -m unittest discover -s tests -v
 ```
 
-To format: `make format`. To install hooks: `make precommit`. Hooks check Ruff before commit; Ruff, Pyright, and tests before push.
+### Автоматизация через Makefile
 
-## GitHub Actions (bonus)
+В проекте предусмотрены команды:
 
-`.github/workflows/quality.yml` runs lint, formatting, type checking, and unit tests on PRs and pushes to `main`. **To prove the bonus works, publish the project, open a PR, and provide a screenshot of the successful Actions run.** A workflow file alone is not proof of a successful run.
+- `make lint` — запуск линтера.
+- `make format` — форматирование кода.
+- `make typecheck` — проверка типов.
+- `make fullcheck` — запуск статических проверок.
+- `make test` — выполнение тестов.
+- `make fulltest` — полный набор проверок.
+- `make precommit` — установка Git hooks.
 
-## Original project
+Для Windows GNU Make необходимо установить отдельно. Проверки также можно запускать непосредственно командами Python, приведёнными выше.
 
-Original project URL: https://github.com/karpathy/micrograd
+### Автоматические проверки Git hooks
 
-Original file: https://github.com/karpathy/micrograd/blob/master/micrograd/engine.py
+С помощью pre-commit настроены проверки, выполняемые перед созданием коммитов и отправкой изменений в удалённый репозиторий.
 
-Changes: introduced explicit Python typing, Ruff-compatible formatting, Pyright configuration, tests, Makefile, Git hooks and CI. Keep the original link in the Pull Request description when submitting.
+При обнаружении ошибок соответствующая операция может быть остановлена до исправления проблем.
+
+### Непрерывная интеграция GitHub Actions
+
+Дополнительно настроен workflow `Code quality`, который запускается при отправке изменений в ветку `main` и создании или обновлении Pull Request.
+
+Workflow выполняет:
+
+1. Проверку кода Ruff.
+2. Проверку форматирования.
+3. Статическую проверку типов Pyright.
+4. Запуск модульных тестов.
+
+Работоспособность GitHub Actions подтверждена успешным запуском:
+
+https://github.com/typecss/prog-instruments-lab1/actions/runs/42415034206
+
+### Результат
+
+В существующий Python-проект добавлены инструменты контроля качества кода, автоматизации проверок и непрерывной интеграции.
+
+Настроенные средства позволяют обнаруживать нарушения оформления, ошибки типов и проблемы, выявляемые модульными тестами, до внесения изменений в основную ветку проекта.
