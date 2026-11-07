@@ -1,0 +1,8 @@
+{
+  "include": ["micrograd_lab", "tests"],
+  "exclude": ["**/__pycache__"],
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "standard",
+  "reportMissingImports": "error",
+  "reportMissingTypeStubs": "none"
+}
